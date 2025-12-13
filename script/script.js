@@ -19,11 +19,13 @@ const handleSearch = () => {
 
 searchButton.addEventListener('click', () => {
   handleSearch();
+  resetWeatherResult();
 });
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
     handleSearch();
+    resetWeatherResult();
   }
 });
 
@@ -81,6 +83,7 @@ const showWeather = (current, forecast) => {
     <p><b>Forecast Avg Temp:</b> ${forecastTemp} °C</p>
     <p><b>Forecast Condition:</b> ${forecastCondition}</p>
   `;
+  updateTheme(condition, isDay);
 };
 
 window.addEventListener('load', () => {
@@ -90,3 +93,33 @@ window.addEventListener('load', () => {
     locationInput.value = lastCity;
   }
 });
+
+
+const updateTheme = (condition, isDay) => {
+  resetWeatherResult();
+  weatherResult.classList.add('weather_container');
+ 
+  dayNightIcon.innerHTML = '';
+ 
+  if (condition.includes('rain')) {
+    weatherResult.classList.add('rain');
+    dayNightIcon.innerHTML = '🌧️';
+  } else if (condition.includes('cloud')) {
+    weatherResult.classList.add('cloudy');
+    dayNightIcon.innerHTML = '☁️';
+  } else if (isDay) {
+    weatherResult.classList.add('day');
+    dayNightIcon.innerHTML = '☀️';
+  } else {
+    weatherResult.classList.add('night');
+    dayNightIcon.innerHTML = '🌙';
+  }
+};
+
+const resetWeatherResult = () => {
+  dayNightIcon.innerHTML = '';
+  weatherResult.classList.remove('weather_container');
+  weatherResult.classList.remove('rain', 'cloudy', 'day', 'night');
+};
+
+
