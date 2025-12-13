@@ -1,0 +1,92 @@
+const locationInput = document.querySelector('#locationInput');
+const searchButton = document.querySelector('.btn_search');
+const weatherResult = document.querySelector('.weather_result');
+const dayNightIcon = document.querySelector('.day_night_icon');
+
+const API_KEY = '9462124e9a004055a7295648250912';
+
+const handleSearch = () => {
+  const cityOfSearch = locationInput.value.trim();
+  console.log(cityOfSearch);
+
+  if (!validateUserInput(cityOfSearch)) {
+    weatherResult.innerHTML =
+      "<p style='color:red;'>Please enter a valid city name</p>";
+    return;
+  }
+  getWeather(cityOfSearch);
+};
+
+searchButton.addEventListener('click', () => {
+  handleSearch();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    handleSearch();
+  }
+});
+
+const getWeather = (city) => {
+  localStorage.setItem('lastCity', city);
+
+  const currentURL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=yes`;
+  const forecastURL = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=1&aqi=yes`;
+
+  fetch(currentURL)
+    .then((result) => {
+      if (!result.ok) throw new Error('City not found');
+      return result.json();
+    })
+    .then((currentData) => {
+      fetch(forecastURL)
+        .then((result) => {
+          if (!result.ok) throw new Error('Forecast not found');
+          return result.json();
+        })
+        .then((forecastData) => showWeather(currentData, forecastData))
+        .catch(() => {
+          weatherResult.innerHTML =
+            "<p style='color:red;'>Forecast data not available</p>";
+        });
+    })
+    .catch(() => {
+      weatherResult.innerHTML =
+        "<p style='color:red;'>City not found or invalid input</p>";
+    });
+};
+
+const validateUserInput = (city) => {
+  return /^[a-zA-Z\s\-]{2,}$/.test(city);
+};
+
+const showWeather = (current, forecast) => {
+  const temp = current.current.temp_c;
+  const condition = current.current.condition.text.toLowerCase();
+  const humidity = current.current.humidity;
+  const wind = current.current.wind_kph;
+  const time = current.location.localtime;
+  const isDay = current.current.is_day === 1;
+
+  const forecastTemp = forecast.forecast.forecastday[0].day.avgtemp_c;
+  const forecastCondition = forecast.forecast.forecastday[0].day.condition.text;
+
+  weatherResult.innerHTML = `
+    <p><b>City:</b> ${current.location.name}, ${current.location.country}</p>
+    <p><b>Temperature:</b> ${temp} °C</p>
+    <p><b>Condition:</b> ${current.current.condition.text}</p>
+    <p><b>Humidity:</b> ${humidity}%</p>
+    <p><b>Wind:</b> ${wind} kph</p>
+    <p><b>Local Time:</b> ${time}</p>
+    <p><b>Forecast Avg Temp:</b> ${forecastTemp} °C</p>
+    <p><b>Forecast Condition:</b> ${forecastCondition}</p>
+  `;
+};
+
+window.addEventListener('load', () => {
+  weatherResult.classList.remove('weather_container');
+  const lastCity = localStorage.getItem('lastCity');
+  if (lastCity) {
+    locationInput.value = lastCity;
+  }
+});

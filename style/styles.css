@@ -3,34 +3,36 @@
   margin: 0;
   padding: 0;
 }
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(to right, #74ebd5, #9face6);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   min-height: 100vh;
   padding: 16px;
   transition: background 0.5s ease;
 }
-.weather-container {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 18px;
-  padding: 24px;
-  width: 100%;
-  max-width: 400px;
+
+header {
+  font-size: 2.5rem;
+  background: linear-gradient(to right, #026f5b, #15277a);
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 3rem;
   text-align: center;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-  transition: transform 0.3s ease, background 0.5s ease, color 0.5s ease;
 }
-.weather-container:hover {
-  transform: translateY(-3px);
-}
+
 h2 {
-  font-size: 2rem;
-  margin-bottom: 18px;
-  color: inherit;
+  background: linear-gradient(to right, #026f5b, #15277a);
+  background-clip: text;
+  color: transparent;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  text-align: center;
 }
+
 input {
   width: 100%;
   padding: 14px;
@@ -41,7 +43,63 @@ input {
   outline: none;
   transition: border 0.3s ease, box-shadow 0.3s ease;
 }
+
 input:focus {
   border-color: #4facfe;
-  box-shadow: 0 0 8px rgba(79,172,254,0.4);
+  box-shadow: 0 0 8px rgba(79, 172, 254, 0.4);
+}
+
+.btn_search {
+  display: block;
+  margin: 1rem auto;
+}
+
+button.btn_search {
+  padding: 12px 30px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(to right, #74ebd5, #9face6);
+  margin-top: 2rem;
+  text-align: center;
+}
+
+button.btn_search:hover {
+  background: linear-gradient(to right, #9face6, #74ebd5);
+}
+
+.day_night_icon {
+  font-size: 3rem;
+  margin: 1rem;
+}
+
+.weather_result {
+  margin-top: 2rem;
+}
+
+@media screen and (max-width: 768px) {
+  header {
+    font-size: 2.1rem;
+  }
+  .weather_container {
+    padding: 22px;
+  }
+  .weather_container p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  header {
+    font-size: 1.6rem;
+  }
+  .weather_container {
+    max-width: 360px;
+    padding: 12px;
+  }
+  .weather_container p {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+  }
 }
