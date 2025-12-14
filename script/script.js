@@ -64,6 +64,9 @@ const getWeather = (city) => {
       return result.json();
     })
     .then((currentData) => {
+      if (currentData.location.name.toLowerCase() !== city.toLowerCase()) {
+    throw new Error('Invalid city');
+  }
       fetch(forecastURL)
         .then((result) => {
           if (!result.ok) throw new Error('Forecast not found');
@@ -140,6 +143,22 @@ const resetWeatherResult = () => {
   dayNightIcon.innerHTML = '';
   weatherResult.classList.remove('weather_container');
   weatherResult.classList.remove('rain', 'cloudy', 'day', 'night');
+};
+const getSearchCity = () => {
+  try {
+    return JSON.parse(localStorage.getItem(SEARCH_HISTORY)) || [];
+  } catch {
+    return [];
+  }
+};
+
+const addSearchCity = (city) => {
+  let searchHistory = getSearchCity();
+  city = city.toLowerCase();
+  searchHistory = searchHistory.filter((item) => item !== city);
+  searchHistory.unshift(city);
+  searchHistory = searchHistory.slice(0, 5);
+  localStorage.setItem(SEARCH_HISTORY, JSON.stringify(searchHistory));
 };
 
 const getSearchCity = () => {
