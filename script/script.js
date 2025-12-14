@@ -161,7 +161,23 @@ const addSearchCity = (city) => {
   localStorage.setItem(SEARCH_HISTORY, JSON.stringify(searchHistory));
 };
 
+const getSearchCity = () => {
+  try {
+    return JSON.parse(localStorage.getItem(SEARCH_HISTORY)) || [];
+  } catch {
+    return [];
+  }
+};
+
+const addSearchCity = (city) => {
+  let searchHistory = getSearchCity();
+  city = city.toLowerCase();
+  searchHistory = searchHistory.filter((item) => item !== city);
+  searchHistory.unshift(city);
+  searchHistory = searchHistory.slice(0, 5);
+  localStorage.setItem(SEARCH_HISTORY, JSON.stringify(searchHistory));
+};
+
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
-
