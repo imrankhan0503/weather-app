@@ -160,8 +160,6 @@ const addSearchCity = (city) => {
   searchHistory = searchHistory.slice(0, 5);
   localStorage.setItem(SEARCH_HISTORY, JSON.stringify(searchHistory));
 };
-
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
-
