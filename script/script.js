@@ -14,6 +14,7 @@ const handleSearch = () => {
 
   if (!validateUserInput(cityOfSearch)) {
     weatherInfo.innerHTML =
+    weatherInfo.innerHTML =
       "<p style='color:red;'>Please enter a valid city name</p>";
     return;
   }
@@ -64,7 +65,9 @@ const getWeather = (city) => {
       return result.json();
     })
     .then((currentData) => {
-      
+      if (currentData.location.name.toLowerCase() !== city.toLowerCase()) {
+    throw new Error('Invalid city');
+  }
       fetch(forecastURL)
         .then((result) => {
           if (!result.ok) throw new Error('Forecast not found');
@@ -142,7 +145,6 @@ const resetWeatherResult = () => {
   weatherResult.classList.remove('weather_container');
   weatherResult.classList.remove('rain', 'cloudy', 'day', 'night');
 };
-
 const getSearchCity = () => {
   try {
     return JSON.parse(localStorage.getItem(SEARCH_HISTORY)) || [];
@@ -163,3 +165,4 @@ const addSearchCity = (city) => {
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
+
