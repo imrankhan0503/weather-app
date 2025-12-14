@@ -37,6 +37,9 @@ const getWeather = (city) => {
 
   fetch(currentURL)
     .then((result) => {
+      if (currentData.location.name.toLowerCase() !== city.toLowerCase()) {
+    throw new Error('Invalid city');
+  }
       if (!result.ok) throw new Error('City not found');
       return result.json();
     })
