@@ -64,6 +64,7 @@ const getWeather = (city) => {
       return result.json();
     })
     .then((currentData) => {
+      
       fetch(forecastURL)
         .then((result) => {
           if (!result.ok) throw new Error('Forecast not found');
