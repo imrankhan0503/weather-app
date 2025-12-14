@@ -13,13 +13,11 @@ const handleSearch = () => {
   console.log(cityOfSearch);
 
   if (!validateUserInput(cityOfSearch)) {
-    weatherInfo.innerHTML =
-    weatherInfo.innerHTML =
+    weatherInfo.innerHTML = weatherInfo.innerHTML =
       "<p style='color:red;'>Please enter a valid city name</p>";
     return;
   }
   getWeather(cityOfSearch);
-  addSearchCity(cityOfSearch);
 };
 
 searchButton.addEventListener('click', () => {
@@ -66,8 +64,8 @@ const getWeather = (city) => {
     })
     .then((currentData) => {
       if (currentData.location.name.toLowerCase() !== city.toLowerCase()) {
-    throw new Error('Invalid city');
-  }
+        throw new Error('Invalid city');
+      }
       fetch(forecastURL)
         .then((result) => {
           if (!result.ok) throw new Error('Forecast not found');
@@ -90,6 +88,9 @@ const validateUserInput = (city) => {
 };
 
 const showWeather = (current, forecast) => {
+  const cityName = current.location.name;
+  addSearchCity(cityName);
+
   const temp = current.current.temp_c;
   const condition = current.current.condition.text.toLowerCase();
   const humidity = current.current.humidity;
@@ -115,10 +116,6 @@ const showWeather = (current, forecast) => {
 
 window.addEventListener('load', () => {
   weatherResult.classList.remove('weather_container');
-  const lastCity = localStorage.getItem('lastCity');
-  if (lastCity) {
-    locationInput.value = lastCity;
-  }
 });
 
 const updateTheme = (condition, isDay) => {
@@ -145,13 +142,6 @@ const resetWeatherResult = () => {
   weatherResult.classList.remove('weather_container');
   weatherResult.classList.remove('rain', 'cloudy', 'day', 'night');
 };
-const getSearchCity = () => {
-  try {
-    return JSON.parse(localStorage.getItem(SEARCH_HISTORY)) || [];
-  } catch {
-    return [];
-  }
-};
 
 const addSearchCity = (city) => {
   let searchHistory = getSearchCity();
@@ -162,7 +152,14 @@ const addSearchCity = (city) => {
   localStorage.setItem(SEARCH_HISTORY, JSON.stringify(searchHistory));
 };
 
+const getSearchCity = () => {
+  try {
+    return JSON.parse(localStorage.getItem(SEARCH_HISTORY)) || [];
+  } catch {
+    return [];
+  }
+};
+
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
-
