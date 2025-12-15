@@ -18,7 +18,7 @@ const handleSearch = () => {
     return;
   }
   getWeather(cityOfSearch);
-  addSearchCity(cityOfSearch);
+  // addSearchCity(cityOfSearch);
 };
 
 searchButton.addEventListener('click', () => {
@@ -89,6 +89,9 @@ const validateUserInput = (city) => {
 };
 
 const showWeather = (current, forecast) => {
+  const cityName = current.location.name;
+  addSearchCity(cityName);
+
   const temp = current.current.temp_c;
   const condition = current.current.condition.text.toLowerCase();
   const humidity = current.current.humidity;
@@ -114,10 +117,6 @@ const showWeather = (current, forecast) => {
 
 window.addEventListener('load', () => {
   weatherResult.classList.remove('weather_container');
-  const lastCity = localStorage.getItem('lastCity');
-  if (lastCity) {
-    locationInput.value = lastCity;
-  }
 });
 
 const updateTheme = (condition, isDay) => {
